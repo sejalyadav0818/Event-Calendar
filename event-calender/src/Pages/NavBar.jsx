@@ -1,7 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
+  const { t } = useTranslation();
   return (
     <>
       {" "}
@@ -9,25 +11,26 @@ const NavBar = () => {
         <div class="buttons flex place-self-start">
           <button class="ext-lg font-bold p-3"></button>
           <NavLink to="/day" className="ext-lg font-bold p-3">
-            Today
+           { t("Today")}
           </NavLink>
           <button class="ext-lg font-bold p-3"></button>
         </div>
         <div class="buttons flex place-self-end">
           <NavLink to="/" className="ext-lg font-bold p-3">
-            Month
+            {t("Month")}
           </NavLink>
           <NavLink to="/week" className="ext-lg font-bold p-3">
-            Week
+            {t("Week")}
           </NavLink>
           <NavLink to="/day" className="ext-lg font-bold p-3">
-            Day
+            {t("Day")}
           </NavLink>
           <NavLink to="/events" className="ext-lg font-bold p-3">
-            Events
+            {t("Events")}
           </NavLink>
         </div>
       </div>
+    
     </>
   );
 };

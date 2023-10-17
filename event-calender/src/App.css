@@ -42,6 +42,18 @@
   font-weight: 400;
 }
 
+/* default light mode styles */
+body {
+  background-color: white;
+  color: black;
+}
+
+/* dark mode styles */
+body.dark-mode {
+  background-color: black;
+  color: white;
+}
+
 .bold-text {
   font-weight: bold;
 }

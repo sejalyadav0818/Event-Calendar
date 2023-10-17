@@ -9,70 +9,24 @@ import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import ListOfEvents from "./ListOfEvents";
-
-const daysOfWeek = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const { Formik } = formik;
 
-const DayHeader = () => (
-  <thead>
-    <tr>
-      {daysOfWeek.map((day, index) => (
-        <th
-          key={index}
-          class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
-        >
-          <span class="xl:block lg:block md:block sm:block hidden text-black-600">
-            {day}
-          </span>
-        </th>
-      ))}
-    </tr>
-  </thead>
-);
-
-const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
-  const dayEvent = eventData.find((event) => event.day === day);
-
-  return (
-    <td
-      className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-300"
-      onDoubleClick={() => onDoubleClick(day)}
-    >
-      <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
-        <div className="top h-5 w-full">
-          {currentDate.getDate() === day ? (
-            <div className="rounded-full bg-blue-200">{day}</div>
-          ) : (
-            <div className="rounded-full text-blue-600">{day}</div>
-          )}
-        </div>
-
-        <div className="bottom flex-grow h-30 py-1 w-full cursor-pointer">
-          {dayEvent && (
-            <div className="rounded-full bg-indigo-300 ">
-              <strong>{dayEvent.eventname}</strong>
-              <p>{dayEvent.description}</p>
-              <small>
-                {dayEvent.from} - {dayEvent.to}
-              </small>
-            </div>
-          )}
-        </div>
-      </div>
-    </td>
-  );
-};
-
 const CalenderScliderByMonth = () => {
+  const { t } = useTranslation();
+  const daysOfWeek = [
+    t("Sunday"),
+    t("Monday"),
+    t("Tuesday"),
+    t("Wednesday"),
+    t("Thursday"),
+    t("Friday"),
+    t("Saturday"),
+  ];
+
+  const { i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   // const [eventData, setEventData] = useState([]);
@@ -137,10 +91,13 @@ const CalenderScliderByMonth = () => {
     }
     return chunks;
   };
+  const monthName = currentDate.toLocaleString("default", { month: "long" });
+  const translatedMonthName = t(`${monthName}`);
 
   const weeks = chunkArray(days, 7);
   return (
     <div>
+      <LanguageSwitcher />
       <div className="buttons flex justify-around h-600 p-500 ">
         <button class="p-1" onClick={prevMonth}>
           <FontAwesome name="chevron-left" className="-ml-px" />
@@ -155,10 +112,7 @@ const CalenderScliderByMonth = () => {
             <span class="text-lg font-bold">
               {" "}
               <span class="text-lg font-bold">
-                {currentDate.toLocaleString("default", {
-                  month: "long",
-                  year: "numeric",
-                })}
+                {`${translatedMonthName} ${currentDate.getFullYear()}`}
               </span>
             </span>
             <div class="buttons">
@@ -194,7 +148,7 @@ const CalenderScliderByMonth = () => {
           </div>
 
           <table class="w-full">
-            <DayHeader />
+            <DayHeader daysOfWeek={daysOfWeek} />
             <tbody>
               {weeks.map((week, weekIndex) => (
                 <tr key={weekIndex} className="text-center h-20">
@@ -223,13 +177,63 @@ const CalenderScliderByMonth = () => {
             setTextArea={setTextArea}
             handletextareaChange={handletextareaChange}
           />
-          {console.log("eventDatadedddddddddddddddddddd", eventData)}
           <ListOfEvents eventData={eventData} setEventData={setEventData} />
         </div>
       </div>
     </div>
   );
 };
+
+const DayHeader = ({ daysOfWeek }) => (
+  <thead>
+    <tr>
+      {daysOfWeek.map((day, index) => (
+        <th
+          key={index}
+          class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
+        >
+          <span class="xl:block lg:block md:block sm:block hidden text-black-600">
+            {day}
+          </span>
+        </th>
+      ))}
+    </tr>
+  </thead>
+);
+
+const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
+  const dayEvent = eventData.find((event) => event.day === day);
+
+  return (
+    <td
+      className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-300"
+      onDoubleClick={() => onDoubleClick(day)}
+    >
+      <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
+        <div className="top h-5 w-full">
+          {currentDate.getDate() === day ? (
+            <div className="rounded-full bg-blue-200">{day}</div>
+          ) : (
+            <div className="rounded-full text-blue-600">{day}</div>
+          )}
+        </div>
+
+        <div className="bottom flex-grow h-30 py-1 w-full cursor-pointer">
+          {dayEvent && (
+            <div className="rounded-full bg-indigo-300 ">
+              <strong>{dayEvent.eventname}</strong>
+              <p>{dayEvent.description}</p>
+              <small>
+                {dayEvent.from} - {dayEvent.to}
+              </small>
+            </div>
+          )}
+        </div>
+      </div>
+    </td>
+  );
+};
+
 const validationSchema = yup.object().shape({
   username: yup.string().required("Enter Your Username").min(2),
 });
@@ -243,6 +247,7 @@ const EventModal = ({
   textarea,
   handletextareaChange,
 }) => {
+  const { t } = useTranslation();
   if (!isOpen) return null;
   const existingEvent = eventData.find((event) => event.day === selectedDay);
 
@@ -273,7 +278,7 @@ const EventModal = ({
       <div className="bg-white-200 p-12 rounded-md w-1/3">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-xl font-bold">
-            {existingEvent ? "Edit Event" : "Add Event"}
+            {existingEvent ? t("Edit Event") : t("Add Event")}
           </h1>
           <button onClick={onClose}>
             <FontAwesomeIcon icon={faTimesCircle} />
@@ -296,10 +301,12 @@ const EventModal = ({
               <Row>
                 <Col>
                   <Form.Group className="mb-3 mt-10">
-                    <Form.Label className="bold-text">Event Name : </Form.Label>
+                    <Form.Label className="bold-text">
+                      {t("Event Name")} :{" "}
+                    </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter Event name"
+                      placeholder={t("Enter Event name")}
                       name="eventname"
                       onChange={handleChange}
                       value={values.eventname}
@@ -313,7 +320,9 @@ const EventModal = ({
                 </Col>
                 <Col>
                   <Form.Group className="mb-3 mt-10">
-                    <Form.Label className="bold-text">From : </Form.Label>
+                    <Form.Label className="bold-text">
+                      {t("From")} :{" "}
+                    </Form.Label>
                     <Form.Control
                       type="date"
                       name="ffrom"
@@ -329,7 +338,7 @@ const EventModal = ({
                 </Col>
                 <Col>
                   <Form.Group className="mb-3 mt-10">
-                    <Form.Label className="bold-text">TO : </Form.Label>
+                    <Form.Label className="bold-text">{t("TO")} : </Form.Label>
                     <Form.Control
                       type="date"
                       name="to"
@@ -344,11 +353,11 @@ const EventModal = ({
                   </Form.Group>
                 </Col>
                 <Col>
-                  <label htmlFor="floatingTextarea">Description </label>
+                  <label htmlFor="floatingTextarea"> {t("Description")} </label>
                   <div className="form-floating">
                     <textarea
                       className="form-control"
-                      placeholder="Leave a Reminder here"
+                      placeholder={t("Leave a Reminder here")}
                       id="floatingTextarea"
                       value={textarea}
                       onChange={handletextareaChange}
@@ -358,11 +367,11 @@ const EventModal = ({
                 <Col>
                   <Form.Group className="mb-3 mt-10">
                     <Form.Label className="bold-text">
-                      Participants Name :{" "}
+                      {t("Participants Name")} :{" "}
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter Participants name"
+                      placeholder={t("Enter Participants name")}
                       name="participants"
                       onChange={handleChange}
                       value={values.participants}
@@ -382,13 +391,13 @@ const EventModal = ({
                     class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                     type="submit"
                   >
-                    {existingEvent ? "Edit" : "Add"}
+                    {existingEvent ? t("Edit") : t("Add")}
                   </button>
                   <button
                     class="bg-red-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                     onClick={handleDelete}
                   >
-                    Delete
+                    {t("Delete")}
                   </button>
                 </div>
               </Row>
