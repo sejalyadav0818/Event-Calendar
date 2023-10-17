@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
 import FontAwesome from "react-fontawesome";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Button from "react-bootstrap/Button";
+import * as formik from "formik";
+import * as yup from "yup";
+import "../App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 const daysOfWeek = [
   "Sunday",
@@ -10,6 +19,8 @@ const daysOfWeek = [
   "Friday",
   "Saturday",
 ];
+
+const { Formik } = formik;
 
 const DayHeader = () => (
   <thead>
@@ -26,32 +37,52 @@ const DayHeader = () => (
   </thead>
 );
 
-const DayCell = ({ day, currentDate, onDoubleClick }) => (
-  <td
-    className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-300"
-    onDoubleClick={() => onDoubleClick(day)}
-  >
-    <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
-      <div className="top h-5 w-full">
-        {currentDate.getDate() === day ? (
-          <div className="rounded-full bg-cyan-400">{day}</div>
-        ) : (
-          <div className="rounded-full text-red-600">{day}</div>
-        )}
+const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
+  const dayEvent = eventData.find((event) => event.day === day); // This finds the event for the current day
+
+  return (
+    <td
+      className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-300"
+      onDoubleClick={() => onDoubleClick(day)}
+    >
+      <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
+        <div className="top h-5 w-full">
+          {currentDate.getDate() === day ? (
+            <div className="rounded-full bg-cyan-400">{day}</div>
+          ) : (
+            <div className="rounded-full text-red-600">{day}</div>
+          )}
+        </div>
+
+        <div className="bottom flex-grow h-30 py-1 w-full cursor-pointer">
+          {dayEvent && (
+            <div className="rounded-full bg-indigo-300 ">
+              <strong>{dayEvent.eventname}</strong>
+              <p>{dayEvent.description}</p>
+              <small>
+                {dayEvent.from} - {dayEvent.to}
+              </small>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="bottom flex-grow h-30 py-1 w-full cursor-pointer"></div>
-    </div>
-  </td>
-);
+    </td>
+  );
+};
 
 const CalenderScliderByMonth = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [eventData, seteventData] = useState([]);
+  const [eventData, setEventData] = useState([]);
+  const [textarea, setTextArea] = useState("");
 
+  const handletextareaChange = (e) => {
+    setTextArea(e.target.value);
+  };
   const handleDayDoubleClick = (day) => {
     setSelectedDay(day);
     setIsModalOpen(true);
+    setTextArea("");
   };
 
   const closeModal = () => {
@@ -164,6 +195,7 @@ const CalenderScliderByMonth = () => {
                       day={day}
                       currentDate={currentDate}
                       onDoubleClick={handleDayDoubleClick}
+                      eventData={eventData}
                     />
                   ))}
                 </tr>
@@ -176,55 +208,169 @@ const CalenderScliderByMonth = () => {
             onClose={closeModal}
             selectedDay={selectedDay}
             eventData={eventData}
-            setEventData={seteventData}
+            setEventData={setEventData}
+            Formik={Formik}
+            textarea={textarea}
+            handletextareaChange={handletextareaChange}
           />
         </div>
       </div>
     </div>
   );
 };
+const validationSchema = yup.object().shape({
+  username: yup.string().required("Enter Your Username").min(2),
+});
 const EventModal = ({
   isOpen,
   onClose,
   selectedDay,
   eventData,
-  seteventData,
+  setEventData,
+  Formik,
+  textarea,
+  handletextareaChange,
 }) => {
   if (!isOpen) return null;
+  const existingEvent = eventData.find((event) => event.day === selectedDay);
 
+  const handleFormSubmit = (values) => {
+    // If existing event, update it. Otherwise, add new event.
+    console.log(values);
+    const newEvents = existingEvent
+      ? eventData.map((event) =>
+          event.day === selectedDay
+            ? { ...values, day: selectedDay, description: textarea }
+            : event
+        )
+      : [...eventData, { ...values, day: selectedDay, description: textarea }];
+    console.log("newEvents", newEvents);
+    setEventData(newEvents);
+    console.log("newEventsssssssss", eventData);
+    onClose();
+  };
+
+  const handleDelete = () => {
+    const newEvents = eventData.filter((event) => event.day !== selectedDay);
+    setEventData(newEvents);
+    onClose();
+  };
+
+  console.log(eventData);
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-4 rounded-md w-1/3">
-        <h2>Details for {selectedDay}</h2>
-        <label>Title</label>
-        <form>
-          <input
-            type="text"
-            value={eventData}
-            onChange={(e) => seteventData(e.target.value)}
-          />
-          <label>Date</label>
-          <input
-            type="date"
-            value={eventData}
-            onChange={(e) => seteventData(e.target.value)}
-          />
-          <label>startTime</label>
-          <input
-            type="date"
-            value={eventData}
-            onChange={(e) => seteventData(e.target.value)}
-          />
-          <label>Description</label>
-          <textarea value={eventData}></textarea>
-          <label>reminder</label>
-          <input
-            type="date"
-            value={eventData}
-            onChange={(e) => seteventData(e.target.value)}
-          />
-        </form>
-        <button onClick={onClose}>Close</button>
+      <div className="bg-gray-200 p-4 rounded-md w-1/3">
+        <button onClick={onClose}>
+          <FontAwesomeIcon icon={faTimesCircle} />
+        </button>
+        {existingEvent ? <h1> Edit Event </h1> : <h1>Add Event</h1>}
+        <Formik
+          enableReinitialize
+          onSubmit={handleFormSubmit}
+          initialValues={{
+            eventname: existingEvent ? existingEvent.eventname : "",
+            ffrom: existingEvent ? existingEvent.ffrom : "",
+            to: existingEvent ? existingEvent.to : "",
+            participants: existingEvent ? existingEvent.participants : "",
+          }}
+        >
+          {({ handleSubmit, handleChange, values, touched, errors }) => (
+            <Form noValidate onSubmit={handleSubmit}>
+              <Row>
+                <Col>
+                  <Form.Group className="mb-3 mt-10">
+                    <Form.Label className="bold-text">Event Name : </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Event name"
+                      name="eventname"
+                      onChange={handleChange}
+                      value={values.eventname}
+                      isValid={touched.eventname && !errors.eventname}
+                      isInvalid={touched.eventname && !!errors.eventname}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.eventname}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-3 mt-10">
+                    <Form.Label className="bold-text">From : </Form.Label>
+                    <Form.Control
+                      type="date"
+                      name="ffrom"
+                      onChange={handleChange}
+                      value={values.ffrom}
+                      isValid={touched.ffrom && !errors.ffrom}
+                      isInvalid={touched.ffrom && !!errors.ffrom}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.ffrom}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-3 mt-10">
+                    <Form.Label className="bold-text">TO : </Form.Label>
+                    <Form.Control
+                      type="date"
+                      name="to"
+                      onChange={handleChange}
+                      value={values.to}
+                      isValid={touched.to && !errors.to}
+                      isInvalid={touched.to && !!errors.to}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.to}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <label for="floatingTextarea">Description </label>
+                  <div class="form-floating">
+                    <textarea
+                      class="form-control"
+                      placeholder="Leave a Reminder here"
+                      id="floatingTextarea"
+                      value={textarea}
+                      onChange={handletextareaChange}
+                    ></textarea>
+                  </div>
+                </Col>
+                <Col>
+                  <Form.Group className="mb-3 mt-10">
+                    <Form.Label className="bold-text">
+                      Participants Name :{" "}
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Participants name"
+                      name="participants"
+                      onChange={handleChange}
+                      value={values.participants}
+                      isValid={touched.participants && !errors.participants}
+                      isInvalid={touched.participants && !!errors.participants}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.participants}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Button variant="dark" type="submit" className="text-center">
+                  Submit
+                </Button>
+                {existingEvent && (
+                  <Button variant="danger" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                )}
+              </Row>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

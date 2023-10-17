@@ -7,9 +7,11 @@ const NavBar = () => {
       {" "}
       <div class="buttons flex items-center place-content-between h-200 p-10">
         <div class="buttons flex place-self-start">
-          <button class="ext-lg font-bold p-3">Next</button>
-          <button class="ext-lg font-bold p-3">Today</button>
-          <button class="ext-lg font-bold p-3">Prev</button>
+          <button class="ext-lg font-bold p-3"></button>
+          <NavLink to="/day" className="ext-lg font-bold p-3">
+            Today
+          </NavLink>
+          <button class="ext-lg font-bold p-3"></button>
         </div>
         <div class="buttons flex place-self-end">
           <NavLink to="/" className="ext-lg font-bold p-3">
