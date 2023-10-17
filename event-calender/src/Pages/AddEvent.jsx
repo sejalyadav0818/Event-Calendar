@@ -168,6 +168,8 @@ const AddEvent = () => {
                     <Form.Label className="bold-text">Password</Form.Label>
                     <Form.Control
                       type="password"
+
+                      
                       name="password"
                       placeholder="Enter Password"
                       onChange={handleChange}
