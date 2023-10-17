@@ -3,12 +3,12 @@ import FontAwesome from "react-fontawesome";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
 import * as formik from "formik";
 import * as yup from "yup";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import ListOfEvents from "./ListOfEvents";
 
 const daysOfWeek = [
   "Sunday",
@@ -30,7 +30,9 @@ const DayHeader = () => (
           key={index}
           class="p-2 border-r h-10 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 xl:text-sm text-xs"
         >
-          <span class="xl:block lg:block md:block sm:block hidden">{day}</span>
+          <span class="xl:block lg:block md:block sm:block hidden text-black-600">
+            {day}
+          </span>
         </th>
       ))}
     </tr>
@@ -38,7 +40,7 @@ const DayHeader = () => (
 );
 
 const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
-  const dayEvent = eventData.find((event) => event.day === day); // This finds the event for the current day
+  const dayEvent = eventData.find((event) => event.day === day);
 
   return (
     <td
@@ -48,9 +50,9 @@ const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
       <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
         <div className="top h-5 w-full">
           {currentDate.getDate() === day ? (
-            <div className="rounded-full bg-cyan-400">{day}</div>
+            <div className="rounded-full bg-blue-200">{day}</div>
           ) : (
-            <div className="rounded-full text-red-600">{day}</div>
+            <div className="rounded-full text-blue-600">{day}</div>
           )}
         </div>
 
@@ -73,16 +75,23 @@ const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
 const CalenderScliderByMonth = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
-  const [eventData, setEventData] = useState([]);
+  // const [eventData, setEventData] = useState([]);
+  const [eventData, setEventData] = useState(
+    JSON.parse(localStorage.getItem("eventData")) || []
+  );
   const [textarea, setTextArea] = useState("");
+
+  useEffect(() => {
+    localStorage.setItem("eventData", JSON.stringify(eventData));
+  }, [eventData]);
 
   const handletextareaChange = (e) => {
     setTextArea(e.target.value);
   };
+
   const handleDayDoubleClick = (day) => {
     setSelectedDay(day);
     setIsModalOpen(true);
-    setTextArea("");
   };
 
   const closeModal = () => {
@@ -132,7 +141,7 @@ const CalenderScliderByMonth = () => {
   const weeks = chunkArray(days, 7);
   return (
     <div>
-      <div className="buttons flex items-center place-content-between h-200 p-1">
+      <div className="buttons flex justify-around h-600 p-500 ">
         <button class="p-1" onClick={prevMonth}>
           <FontAwesome name="chevron-left" className="-ml-px" />
         </button>
@@ -211,8 +220,11 @@ const CalenderScliderByMonth = () => {
             setEventData={setEventData}
             Formik={Formik}
             textarea={textarea}
+            setTextArea={setTextArea}
             handletextareaChange={handletextareaChange}
           />
+          {console.log("eventDatadedddddddddddddddddddd", eventData)}
+          <ListOfEvents eventData={eventData} setEventData={setEventData} />
         </div>
       </div>
     </div>
@@ -236,7 +248,6 @@ const EventModal = ({
 
   const handleFormSubmit = (values) => {
     // If existing event, update it. Otherwise, add new event.
-    console.log(values);
     const newEvents = existingEvent
       ? eventData.map((event) =>
           event.day === selectedDay
@@ -244,26 +255,31 @@ const EventModal = ({
             : event
         )
       : [...eventData, { ...values, day: selectedDay, description: textarea }];
-    console.log("newEvents", newEvents);
     setEventData(newEvents);
-    console.log("newEventsssssssss", eventData);
+    console.log(newEvents);
+
     onClose();
   };
 
   const handleDelete = () => {
     const newEvents = eventData.filter((event) => event.day !== selectedDay);
     setEventData(newEvents);
+    handletextareaChange({ target: { value: "" } });
     onClose();
   };
 
-  console.log(eventData);
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-gray-200 p-4 rounded-md w-1/3">
-        <button onClick={onClose}>
-          <FontAwesomeIcon icon={faTimesCircle} />
-        </button>
-        {existingEvent ? <h1> Edit Event </h1> : <h1>Add Event</h1>}
+    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-white bg-opacity-8 z-50">
+      <div className="bg-white-200 p-12 rounded-md w-1/3">
+        <div className="flex justify-between items-center mb-5">
+          <h1 className="text-xl font-bold">
+            {existingEvent ? "Edit Event" : "Add Event"}
+          </h1>
+          <button onClick={onClose}>
+            <FontAwesomeIcon icon={faTimesCircle} />
+          </button>
+        </div>
+
         <Formik
           enableReinitialize
           onSubmit={handleFormSubmit}
@@ -272,6 +288,7 @@ const EventModal = ({
             ffrom: existingEvent ? existingEvent.ffrom : "",
             to: existingEvent ? existingEvent.to : "",
             participants: existingEvent ? existingEvent.participants : "",
+            textarea: existingEvent ? existingEvent.textarea : "",
           }}
         >
           {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -327,10 +344,10 @@ const EventModal = ({
                   </Form.Group>
                 </Col>
                 <Col>
-                  <label for="floatingTextarea">Description </label>
-                  <div class="form-floating">
+                  <label htmlFor="floatingTextarea">Description </label>
+                  <div className="form-floating">
                     <textarea
-                      class="form-control"
+                      className="form-control"
                       placeholder="Leave a Reminder here"
                       id="floatingTextarea"
                       value={textarea}
@@ -358,15 +375,22 @@ const EventModal = ({
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
-                <Button variant="dark" type="submit" className="text-center">
-                  Submit
-                </Button>
-                {existingEvent && (
-                  <Button variant="danger" onClick={handleDelete}>
+                <div className="flex justify-around items-center mb-1">
+                  <button
+                    class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                    type="submit"
+                  >
+                    {existingEvent ? "Edit" : "Add"}
+                  </button>
+                  <button
+                    class="bg-red-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                    onClick={handleDelete}
+                  >
                     Delete
-                  </Button>
-                )}
+                  </button>
+                </div>
               </Row>
             </Form>
           )}

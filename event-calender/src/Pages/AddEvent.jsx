@@ -168,8 +168,6 @@ const AddEvent = () => {
                     <Form.Label className="bold-text">Password</Form.Label>
                     <Form.Control
                       type="password"
-
-                      
                       name="password"
                       placeholder="Enter Password"
                       onChange={handleChange}
@@ -181,6 +179,7 @@ const AddEvent = () => {
                     <Form.Control.Feedback type="invalid">
                       {errors.password}
                     </Form.Control.Feedback>
+                  </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group className="mb-3 mt-10">
@@ -247,7 +246,7 @@ const AddEvent = () => {
                       class="form-control"
                       placeholder="Leave a comment here"
                       id="floatingTextarea"
-                      value={textarea}
+                      value={console.log(textarea)}
                       onChange={handletextareaChange}
                     ></textarea>
                     <label for="floatingTextarea">Address</label>

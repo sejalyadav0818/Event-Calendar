@@ -4,6 +4,7 @@ import CalenderScliderByDay from "./Pages/CalenderScliderByDay";
 import NavBar from "./Pages/NavBar";
 import { Route, Routes } from "react-router-dom";
 import AddEvent from "./Pages/AddEvent";
+import ListOfEvents from "./Pages/ListOfEvents";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path="/" element={<CalenderScliderByMonth />} />
         <Route path="/week" element={<CalenderScliderByWeek />} />
         <Route path="/day" element={<CalenderScliderByDay />} />
-        <Route path="/addevnt" element={<AddEvent/>} />
+        <Route path="/addevnt" element={<AddEvent />} />
+        <Route path="/events" element={<ListOfEvents />} />
       </Routes>
     </>
   );

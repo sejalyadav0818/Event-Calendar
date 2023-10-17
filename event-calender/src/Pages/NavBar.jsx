@@ -23,6 +23,9 @@ const NavBar = () => {
           <NavLink to="/day" className="ext-lg font-bold p-3">
             Day
           </NavLink>
+          <NavLink to="/events" className="ext-lg font-bold p-3">
+            Events
+          </NavLink>
         </div>
       </div>
     </>
