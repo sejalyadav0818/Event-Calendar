@@ -8,7 +8,6 @@ import * as yup from "yup";
 import "../App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import ListOfEvents from "./ListOfEvents";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -26,7 +25,6 @@ const CalenderScliderByMonth = () => {
     t("Saturday"),
   ];
 
-  const { i18n } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   // const [eventData, setEventData] = useState([]);
@@ -177,7 +175,7 @@ const CalenderScliderByMonth = () => {
             setTextArea={setTextArea}
             handletextareaChange={handletextareaChange}
           />
-          <ListOfEvents eventData={eventData} setEventData={setEventData} />
+          {/* <ListOfEvents eventData={eventData} setEventData={setEventData} /> */}
         </div>
       </div>
     </div>
@@ -212,7 +210,7 @@ const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
       <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
         <div className="top h-5 w-full">
           {currentDate.getDate() === day ? (
-            <div className="rounded-full bg-blue-200">{day}</div>
+            <div className="rounded-full bg-red-300">{day}</div>
           ) : (
             <div className="rounded-full text-blue-600">{day}</div>
           )}
@@ -237,15 +235,15 @@ const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
 const validationSchema = yup.object().shape({
   username: yup.string().required("Enter Your Username").min(2),
 });
-const EventModal = ({
+export const EventModal = ({
   isOpen,
   onClose,
-  selectedDay,
-  eventData,
-  setEventData,
   Formik,
   textarea,
   handletextareaChange,
+  eventData,
+  setEventData,
+  selectedDay,
 }) => {
   const { t } = useTranslation();
   if (!isOpen) return null;
@@ -261,8 +259,6 @@ const EventModal = ({
         )
       : [...eventData, { ...values, day: selectedDay, description: textarea }];
     setEventData(newEvents);
-    console.log(newEvents);
-
     onClose();
   };
 
