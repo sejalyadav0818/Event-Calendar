@@ -34,26 +34,6 @@ const ListOfEvents = () => {
           </div>
         </div>
       ))}
-      {/* {eventData.map((event, index) => (
-        <div
-          key={index}
-          class="container mx-auto pr-6 pl-6 md:pr-24 md:pl-24 pt-6 pb-6 mt-6"
-        >
-          <div class="bg-primary p-4 border-l-4 border-blue-500 mb-0 rounded-md aos-init aos-animate">
-            <div class="flex justify-between">
-              <p>{event.eventname}</p>
-              <p>{event.description}</p>
-              <p>{event.participants}</p>
-              <p>{event.textarea}</p>
-              <div class="flex justify-between mt-5">
-                <p class="text-smail">
-                  {event.ffrom} - {event.to}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))} */}
     </>
   );
 };
