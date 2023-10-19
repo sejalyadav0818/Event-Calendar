@@ -20,7 +20,7 @@
    * 
 
 ## State Management
-**Implementation using Redux and Context API** [Diffrent Branch]
+**Implementation using Redux in This Branch 
 
 ## Pages
 
