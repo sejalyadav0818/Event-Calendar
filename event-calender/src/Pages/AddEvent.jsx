@@ -9,7 +9,7 @@ import * as formik from "formik";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "../App.css";
+import "../App.css"  ;
 
 const AddEvent = () => {
   const { id } = useParams();
