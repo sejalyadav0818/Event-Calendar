@@ -20,7 +20,7 @@
      
 
 ## State Management
-**Implementation using Redux in This Branch.
+  * Implementation using Redux in This Branch.
 
 ## Pages
 
