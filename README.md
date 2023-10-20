@@ -39,6 +39,8 @@
    * A form to add a new event.
    * If editing, this form would pre-fill with the event's existing details.
 
+### 5. Data Store in LocalStorage
+
 
 
 
