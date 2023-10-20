@@ -4,7 +4,13 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import '../App.css'
 import { useTranslation } from "react-i18next";
+import {
+  getCharacterValidationError,
+  validationSchema,
+} from "../validationSchemas/eventSchema";
+
 export const EventModal = ({
   isOpen,
   onClose,
@@ -53,6 +59,7 @@ export const EventModal = ({
 
         <Formik
           enableReinitialize
+          validationSchema={validationSchema}
           onSubmit={handleFormSubmit}
           initialValues={{
             eventname: existingEvent ? existingEvent.eventname : "",
@@ -79,7 +86,10 @@ export const EventModal = ({
                       isValid={touched.eventname && !errors.eventname}
                       isInvalid={touched.eventname && !!errors.eventname}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      className="error-text"
+                    >
                       {errors.eventname}
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -97,7 +107,10 @@ export const EventModal = ({
                       isValid={touched.ffrom && !errors.ffrom}
                       isInvalid={touched.ffrom && !!errors.ffrom}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      className="error-text"
+                    >
                       {errors.ffrom}
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -113,13 +126,19 @@ export const EventModal = ({
                       isValid={touched.to && !errors.to}
                       isInvalid={touched.to && !!errors.to}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      className="error-text"
+                    >
                       {errors.to}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col>
-                  <label htmlFor="floatingTextarea"> {t("Description")} </label>
+                  <label htmlFor="floatingTextarea">
+                    {" "}
+                    {t("Description (Optional)")}{" "}
+                  </label>
                   <div className="form-floating">
                     <textarea
                       className="form-control"
@@ -144,7 +163,10 @@ export const EventModal = ({
                       isValid={touched.participants && !errors.participants}
                       isInvalid={touched.participants && !!errors.participants}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback
+                      type="invalid"
+                      className="error-text"
+                    >
                       {errors.participants}
                     </Form.Control.Feedback>
                   </Form.Group>

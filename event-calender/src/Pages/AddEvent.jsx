@@ -9,8 +9,11 @@ import * as formik from "formik";
 import * as yup from "yup";
 import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "../App.css"  ;
-
+import "../App.css";
+import {
+  getCharacterValidationError,
+  validationSchema,
+} from "../validationSchemas/eventSchema";
 const AddEvent = () => {
   const { id } = useParams();
   const [editData, setEditData] = useState(null);
@@ -46,27 +49,8 @@ const AddEvent = () => {
   const handletextareaChange = (e) => {
     setTextArea(e.target.value);
   };
-  const validationSchema = yup.object().shape({
-    username: yup.string().required("Enter Your Username").min(2),
-    email: yup
-      .string()
-      .required("Enter Your Email")
-      .email("Enter a valid email"),
-    password: yup
-      .string()
-      .required("Enter Your  password")
-      .min(8, "Password must have at least 8 characters")
-      .matches(/[0-9]/, getCharacterValidationError("digit"))
-      .matches(/[a-z]/, getCharacterValidationError("lowercase"))
-      .matches(/[A-Z]/, getCharacterValidationError("uppercase")),
-    confirmPassword: yup
-      .string()
-      .required("Enter Your  confirmPassword ")
-      .oneOf([yup.ref("password")], "Passwords does not match"),
-  });
 
   useEffect(() => {
-    
     const allData = JSON.parse(localStorage.getItem("FormData")) || [];
     const dataToEdit = allData[id];
     if (dataToEdit) {
@@ -183,7 +167,9 @@ const AddEvent = () => {
                 </Col>
                 <Col>
                   <Form.Group className="mb-3 mt-10">
-                    <Form.Label className="bold-text">Confirm Password</Form.Label>
+                    <Form.Label className="bold-text">
+                      Confirm Password
+                    </Form.Label>
                     <Form.Control
                       type="password"
                       name="confirmPassword"
@@ -255,15 +241,17 @@ const AddEvent = () => {
               </Row>
               <Row>
                 <Col>
-                  <Form.Label className="bold-text padding-right">Gender</Form.Label>
+                  <Form.Label className="bold-text padding-right">
+                    Gender
+                  </Form.Label>
 
-                  <RadioButtons 
+                  <RadioButtons
                     name="exampleRadioGroup"
                     value="Male"
                     checkedValue={selectedValue}
                     onChange={setSelectedValue}
                   />
-                  <RadioButtons 
+                  <RadioButtons
                     name="exampleRadioGroup"
                     value="Female"
                     checkedValue={selectedValue}
