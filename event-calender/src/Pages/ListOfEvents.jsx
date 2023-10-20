@@ -53,7 +53,7 @@ const ListOfEvents = () => {
                     {" "}
                     Event Participants : {event.participants}
                   </p>
-                </p>
+                </p> 
                 <p class="text-green-700 text-small font-extrabold font-normal hover:font-bold">
                   From : {event.ffrom} <br></br> To : {event.to}
                 </p>
