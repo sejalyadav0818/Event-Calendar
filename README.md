@@ -4,7 +4,7 @@
 ## Features
 
 ### 1. Add, Edit, and Delete Events
-   * Users can add new events specifying the name, date, start time, end time, description, and participants.
+   * Users can add new events  (Double Click ON cell)specifying the name, date, start time, end time, description, and participants.
    * Editing functionality allows modification of existing events.
 
 ### 2. Calendar View
