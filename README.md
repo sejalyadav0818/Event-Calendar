@@ -1,4 +1,5 @@
-# Event Calendar Application - React
+# Event Calendar Application - React 
+## Demo : [Visit My Site](https://65327498364bb8114a002896--glistening-flan-42952c.netlify.app/)
 
 ## Features
 
@@ -41,7 +42,7 @@
 ### 4. Add/Edit Event Page
    * A form to add a new event.
    * If editing, this form would pre-fill with the event's existing details.
-[Visit My Site](https://65327498364bb8114a002896--glistening-flan-42952c.netlify.app/)
+
 
 
 
