@@ -19,10 +19,6 @@
 ### 4. Reminders
    * Users can set reminders for events. When an event is near, the application can display a notification (for web, you could use browser notifications).
      
-
-## State Management
-  * Implementation using Redux in This Branch.
-
 ## Pages
 
 ### 1. Homepage
