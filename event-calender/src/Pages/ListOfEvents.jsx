@@ -20,16 +20,13 @@ const ListOfEvents = () => {
     <>
       <form class="d-flex flex items-center justify-center">
         <input
-          class="form-control me-10 text-lg mx-10 p-4"
+          class="form-control me-1 text-lg m-10 p-10 w-10"
           type="search"
           placeholder="Search Something.."
           aria-label="Search"
           value={serachTerm}
           onChange={(e) => setserachTerm(e.target.value)}
         />
-        <button class="btn btn-outline-success" type="submit">
-          Search
-        </button>
       </form>
       {FilterdEvents.length > 0 ? (
         FilterdEvents.map((event, index) => (
@@ -37,7 +34,7 @@ const ListOfEvents = () => {
             key={index}
             class="container mx-auto pr-6 pl-6 md:pr-24 md:pl-24 pt-6 pb-6 mt-6"
           >
-            <div class="bg-primary p-4 border-l-4 border-blue-500 mb-0 rounded-md aos-init aos-animate">
+            <div class=" p-4 border-l-4 border-blue-500 mb-0 rounded-md aos-init aos-animate">
               <div class="flex justify-between">
                 <h1 className="text-red-900 text-xl italic font-normal hover:font-bold">
                   Event Name : {event.eventname}
@@ -53,7 +50,7 @@ const ListOfEvents = () => {
                     {" "}
                     Event Participants : {event.participants}
                   </p>
-                </p> 
+                </p>
                 <p class="text-green-700 text-small font-extrabold font-normal hover:font-bold">
                   From : {event.ffrom} <br></br> To : {event.to}
                 </p>

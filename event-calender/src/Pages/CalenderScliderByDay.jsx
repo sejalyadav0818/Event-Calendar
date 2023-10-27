@@ -83,7 +83,7 @@ const CalenderScliderByDay = () => {
         </button>
       </div>
       <div class="container mx-auto mt-10">
-        <div class="wrapper bg-white rounded shadow w-full ">
+        <div class="">
           <div class="header flex justify-between border-b p-2">
             <span class="text-lg font-bold">
               {" "}
