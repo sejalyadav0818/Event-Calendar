@@ -37,10 +37,9 @@ function App() {
   return (
     <>
       <I18nextProvider i18n={i18n}>
-        {location.pathname !== "/" &&
-          location.pathname !== "/register" && (
-            <NavBar toogleDarkmode={toogleDarkmode} />
-          )}
+        {location.pathname !== "/" && location.pathname !== "/register" && (
+          <NavBar toogleDarkmode={toogleDarkmode} />
+        )}
 
         <AuthProvider>
           <Routes>

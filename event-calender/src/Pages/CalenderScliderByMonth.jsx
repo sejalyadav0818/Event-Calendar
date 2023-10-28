@@ -7,15 +7,20 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { DayCell } from "../components/DayCell";
 import { DayHeader } from "../components/DayHeader";
 import { EventModal } from "../components/EventModal";
+import { useNavigate } from "react-router-dom";
 import {
   getDaysInMonth,
   nextMonth,
   prevMonth,
   chunkArray,
 } from "../utils/dateFunctions";
+import { useAuth } from "../Context/AuthContext";
 const { Formik } = formik;
 
 const CalenderScliderByMonth = () => {
+  const { isLogin, logOut } = useAuth();
+  const Navigate = useNavigate();
+  const token = JSON.parse(localStorage.getItem("token")) || []
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [textarea, setTextArea] = useState("");
@@ -34,6 +39,14 @@ const CalenderScliderByMonth = () => {
       year: "numeric",
     })}`;
   }, [currentDate]);
+
+  useEffect(() => {
+    if (!token) {
+      Navigate("/login",{ replace: true });
+    } else {
+      Navigate("/home",{ replace: true });
+    }
+  }, [isLogin, Navigate]);
 
   const { t } = useTranslation();
 
@@ -129,7 +142,7 @@ const CalenderScliderByMonth = () => {
             </div>
           </div>
 
-          <table class="w-full">
+          <table className="h-100 w-100 p-100">
             <DayHeader daysOfWeek={daysOfWeek} />
             <tbody>
               {weeks.map((week, weekIndex) => (

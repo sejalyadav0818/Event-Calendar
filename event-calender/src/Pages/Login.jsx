@@ -29,7 +29,6 @@ const Login = () => {
       const email = user[0].email;
       const password = user[0].password;
       const id = user[0].id;
-
       const mockToken = generateMockJWT([
         {
           userId: id,
