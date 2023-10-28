@@ -94,15 +94,21 @@ const CalenderScliderByWeek = () => {
     <div>
       <LanguageSwitcher />
       <div className="buttons flex justify-around h-600 p-500 ">
-        <button class="p-1" onClick={prevMonth}>
+      <button
+          class="p-1"
+          onClick={() => prevMonth(currentDate, setCurrentDate)}
+        >
           <FontAwesome name="chevron-left" className="-ml-px" />
         </button>
-        <button class="p-1" onClick={nextMonth}>
-          <FontAwesome name="chevron-right" className="-ml-px" />
-        </button>
+        <button
+          class="p-1"
+          onClick={() => nextMonth(currentDate, setCurrentDate)}
+        > <FontAwesome name="chevron-right" className="-ml-px" />
+       
+          </button>
       </div>
       <div class="container mx-auto mt-10">
-        <div class="wrapper bg-white rounded shadow w-full ">
+        <div class="">
           <div class="header flex justify-between border-b p-2">
             <span class="text-lg font-bold">
               {" "}

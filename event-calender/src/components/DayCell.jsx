@@ -1,8 +1,10 @@
 import React from "react";
 
 export const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
-  const dayEvent = eventData.find((event) => event.day === day);
-
+  const fullDate = `${currentDate.getFullYear()}-${String(
+    currentDate.getMonth() + 1
+  ).padStart(2, "0")}-${String(day).padStart(2, "0")}`; // format: YYYY-MM-DD
+  const dayEvent = eventData.find((event) => event.fullDate === fullDate);
   return (
     <td
       className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-300"
@@ -32,4 +34,3 @@ export const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
     </td>
   );
 };
-

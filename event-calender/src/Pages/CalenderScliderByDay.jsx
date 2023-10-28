@@ -75,15 +75,22 @@ const CalenderScliderByDay = () => {
     <div>
       <LanguageSwitcher />
       <div className="buttons flex justify-around h-600 p-500 ">
-        <button class="p-1" onClick={prevMonth}>
+        <button
+          class="p-1"
+          onClick={() => prevMonth(currentDate, setCurrentDate)}
+        >
           <FontAwesome name="chevron-left" className="-ml-px" />
         </button>
-        <button class="p-1" onClick={nextMonth}>
+        <button
+          class="p-1"
+          onClick={() => nextMonth(currentDate, setCurrentDate)}
+        >
+          {" "}
           <FontAwesome name="chevron-right" className="-ml-px" />
         </button>
       </div>
       <div class="container mx-auto mt-10">
-        <div class="wrapper bg-white rounded shadow w-full ">
+        <div class="">
           <div class="header flex justify-between border-b p-2">
             <span class="text-lg font-bold">
               {" "}
@@ -152,6 +159,7 @@ const CalenderScliderByDay = () => {
             textarea={textarea}
             setTextArea={setTextArea}
             handletextareaChange={handletextareaChange}
+            currentDate={currentDate}
           />
         </div>
       </div>
@@ -160,23 +168,23 @@ const CalenderScliderByDay = () => {
 };
 
 const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
-  const dayEvent = eventData.find((event) => event.day === day);
+  const fullDate = `${currentDate.getFullYear()}-${String(
+    currentDate.getMonth() + 1
+  ).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  const dayEvent = eventData.find((event) => event.fullDate === fullDate);
 
-  while (currentDate.getDate() != day) {
-    return <td className="invisible"></td>;
-  }
+  const isToday = currentDate.getDate() === day;
+
+  if (!isToday) return <td className="invisible"></td>;
+
   return (
     <td
-      className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease hover:bg-gray-300"
+      className="border p-1 h-40 xl:w-40 lg:w-30 md:w-30 sm:w-20 w-10 overflow-auto transition cursor-pointer duration-500 ease bg-red-300"
       onDoubleClick={() => onDoubleClick(day)}
     >
       <div className="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
         <div className="top h-5 w-full">
-          {currentDate.getDate() === day ? (
-            <div className="rounded-full bg-red-300">{day}</div>
-          ) : (
-            <div className="rounded-full text-blue-600">{day}</div>
-          )}
+          <div className="rounded-full bg-red-300">{day}</div>
         </div>
 
         <div className="bottom flex-grow h-30 py-1 w-full cursor-pointer">
@@ -185,7 +193,7 @@ const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
               <strong>{dayEvent.eventname}</strong>
               <p>{dayEvent.description}</p>
               <small>
-                {dayEvent.from} - {dayEvent.to}
+                {dayEvent.ffrom} - {dayEvent.to}
               </small>
             </div>
           )}
@@ -194,4 +202,5 @@ const DayCell = ({ day, currentDate, onDoubleClick, eventData }) => {
     </td>
   );
 };
+
 export default CalenderScliderByDay;

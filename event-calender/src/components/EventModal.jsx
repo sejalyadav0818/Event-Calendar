@@ -4,7 +4,7 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import '../App.css'
+import "../App.css";
 import { useTranslation } from "react-i18next";
 import {
   getCharacterValidationError,
@@ -20,26 +20,34 @@ export const EventModal = ({
   eventData,
   setEventData,
   selectedDay,
+  currentDate,
 }) => {
   const { t } = useTranslation();
   if (!isOpen) return null;
-  const existingEvent = eventData.find((event) => event.day === selectedDay);
+
+  const fullDate = `${currentDate.getFullYear()}-${String(
+    currentDate.getMonth() + 1
+  ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+  const existingEvent = eventData.find((event) => event.fullDate === fullDate);
 
   const handleFormSubmit = (values) => {
-    // If existing event, update it. Otherwise, add new event.
+    const newEvent = { ...values, fullDate, description: textarea };
+
     const newEvents = existingEvent
       ? eventData.map((event) =>
-          event.day === selectedDay
-            ? { ...values, day: selectedDay, description: textarea }
-            : event
+          event.fullDate === fullDate ? newEvent : event
         )
-      : [...eventData, { ...values, day: selectedDay, description: textarea }];
+      : [...eventData, newEvent];
+
     setEventData(newEvents);
     onClose();
   };
 
   const handleDelete = () => {
-    const newEvents = eventData.filter((event) => event.day !== selectedDay);
+    const fullDate = `${currentDate.getFullYear()}-${String(
+      currentDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`; // format: YYYY-MM-DD
+    const newEvents = eventData.filter((event) => event.fullDate !== fullDate);
     setEventData(newEvents);
     handletextareaChange({ target: { value: "" } });
     onClose();
