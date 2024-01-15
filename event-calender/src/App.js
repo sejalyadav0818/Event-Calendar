@@ -14,31 +14,12 @@ import Login from "../src/Pages/Login";
 import Register from "./Pages/Register";
 
 function App() {
-  const [darkmode, setDarkmode] = useState(false);
   const location = useLocation();
-  const toogleDarkmode = () => {
-    const newdarkmode = !darkmode;
-    setDarkmode(newdarkmode);
-    localStorage.setItem("darkmode", newdarkmode);
-  };
-  useEffect(() => {
-    if (darkmode) {
-      document.body.classList.remove("dark-mode");
-    } else {
-      document.body.classList.add("dark-mode");
-    }
-  }, [darkmode]);
-
-  useEffect(() => {
-    const savedDarktmode = localStorage.getItem("darkmode");
-    setDarkmode(savedDarktmode);
-  }, []);
-
   return (
     <>
       <I18nextProvider i18n={i18n}>
         {location.pathname !== "/" && location.pathname !== "/register" && (
-          <NavBar toogleDarkmode={toogleDarkmode} />
+          <NavBar />
         )}
 
         <AuthProvider>

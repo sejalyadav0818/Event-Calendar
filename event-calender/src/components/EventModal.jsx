@@ -6,10 +6,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import "../App.css";
 import { useTranslation } from "react-i18next";
-import {
-  getCharacterValidationError,
-  validationSchema,
-} from "../validationSchemas/eventSchema";
+import { validationSchema,} from "../validationSchemas/eventSchema";
 
 export const EventModal = ({
   isOpen,

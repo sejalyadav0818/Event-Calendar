@@ -1,6 +1,6 @@
 * {
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  font-size: 20px;
+  font-family: serif;
+  font-size: 15px;
   font-weight: 10;
 }
 
@@ -14,4 +14,41 @@
 {
  margin-bottom: 10px;
  height:70px;
+}
+/* Light Mode Styles */
+body {
+  background-color: #f9f9f9; /* Light gray background */
+  color: #333333; /* Dark text color */
+}
+
+.App-header {
+  background-color: #eef1f3; /* Blue header background */
+  color: #ffffff; /* White header text color */
+}
+
+.buttons button {
+  background-color: #86898c; /* Blue buttons background */
+  color: #ffffff; /* White buttons text color */
+}
+
+.header {
+  border-bottom: 1px solid #d0d0d0; /* Light gray border */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #1a1a1a; /* Dark background */
+  color: #ffffff; /* White text color */
+}
+
+.App-header.dark-mode {
+  background-color: #333333; /* Dark header background */
+}
+
+.buttons button.dark-mode {
+  background-color: #333333; /* Dark buttons background */
+}
+
+.header.dark-mode {
+  border-bottom: 1px solid #555555; /* Dark border */
 }

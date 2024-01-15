@@ -1,11 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-const NavBar = ({ toogleDarkmode }) => {
+const NavBar = () => {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
   const Navigate = useNavigate();
@@ -32,12 +30,7 @@ const NavBar = ({ toogleDarkmode }) => {
             Hindi
           </button>
         </div>
-        <button
-          onClick={toogleDarkmode}
-          className="p-2 hover:bg-gray-100 rounded"
-        >
-          <FontAwesomeIcon icon={faMoon} />
-        </button>
+        
         <NavLink
           to="/day"
           className="font-bold px-3 py-2 text-gray-800 hover:bg-gray-100 rounded"
