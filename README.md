@@ -2,7 +2,7 @@
 ---
 
 # Event Calendar Application - React 
-## Demo : [Visit My Site](https://65327498364bb8114a002896--glistening-flan-42952c.netlify.app/)
+## Demo : [Event-Calendar](https://charming-belekoy-3300b5.netlify.app/)
 
 ## Features
 
